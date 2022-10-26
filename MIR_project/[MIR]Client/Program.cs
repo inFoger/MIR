@@ -31,6 +31,7 @@ public class Program
         //    SendFileOverSocket(sendSocket, "File.txt");
         string filePath = "C:\\Users\\Anton\\source\\repos\\MIR_project\\[MIR]Client\\File.txt";
         FileDto fileDto = FileDtoUtils.CreateFileDto(filePath);
+        byte[] buffer = fileDto.Serialize();
         Console.WriteLine("Программа запустилась");
         Console.WriteLine(Encoding.Unicode.GetString(fileDto.Name) + " " + BitConverter.ToInt32(fileDto.Data) + " " 
             + BitConverter.ToInt32(fileDto.NameBytesAmount) + " " + BitConverter.ToInt32(fileDto.TotalBytesAmount));
@@ -44,12 +45,6 @@ public class Program
         //{
         //    Console.WriteLine(ex.ToString());
         //}
-    }
-
-    public static FileDto FileDtoDeserialize()
-    {
-
-        return new FileDto();
     }
 
     public static void SendFileOverSocket(Socket socket, String fileName)

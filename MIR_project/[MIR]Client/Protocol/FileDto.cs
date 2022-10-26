@@ -28,7 +28,7 @@ namespace _MIR_Client
 
         public byte[] Serialize()
         {
-            return;
+            return TotalBytesAmount.Concat(NameBytesAmount).Concat(Name).Concat(Data).ToArray();
         }
 
         public override string ToString()
