@@ -1,0 +1,81 @@
+﻿using System;
+using System.IO;
+using System.Net;
+using System.Net.Sockets;
+using System.Text;
+using System.Threading.Tasks;
+public class Program
+{
+    //1.Считываем название файла [-]
+    //2.Считываем байты в нём [-]
+    //3.Пересылаем байты    
+    //
+    //создать класс, который будет сериализовывать и десериализовываться [-]
+    //для получения можно использовать StringBuilder
+    //
+    //считать название
+    //нормально написать методы
+    //система тикетов: использовать канбан [-]
+    //поэтапно:
+    //1.возможность передавать клиенту файлы
+    //2.сервер принимает файлы
+    //3.сервер отправляет обратно
+
+
+    //Ожидает подключений на TCP-порты 10000 и 20000.
+    //При подключении к серверу на TCP-порт 10000: сервер принимает файлы во внутренний буффер. Сервер запоминает имена и содержимое файлов
+    //При подключении к серверу на TCP-порт 20000: сервер передаёт все файлы из буфера.
+    static void Main(string[] args)
+    {
+
+        Socket reseiveSocket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
+        //Socket sendSocket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
+
+        try
+        {
+            reseiveSocket.Bind(new IPEndPoint(IPAddress.Parse("127.0.0.1"), 10000));
+            //sendSocket.Bind(new IPEndPoint(IPAddress.Parse("127.0.0.1"), 20000));
+
+            reseiveSocket.Listen(10); //10 - количество входящих подключений, которые могут быть поставлены в очередь сокета
+            //sendSocket.Listen(10);
+
+            Console.WriteLine("Сервер запущен. Ожидание подключений...");
+
+            while (true)
+            {
+                Socket clientSendingSocket = reseiveSocket.Accept();
+                Console.WriteLine("Чот подключилось");
+                StringBuilder builder = new StringBuilder();
+                int recievingBytes = 0; // количество полученых байтов
+                byte[] data = new byte[256]; // буффер для полученных данных
+
+                do
+                {
+                    recievingBytes = clientSendingSocket.Receive(data);
+                    builder.Append(Encoding.Unicode.GetString(data, 0, recievingBytes));
+
+                } while (clientSendingSocket.Available > 0);
+                Console.WriteLine("Полученное сообщение: " + builder.ToString());
+
+                // отправляем ответ
+                string message = "ваше сообщение доставлено";
+                data = Encoding.Unicode.GetBytes(message);
+                clientSendingSocket.Send(data);
+                // закрываем сокет
+                clientSendingSocket.Shutdown(SocketShutdown.Both);
+                clientSendingSocket.Close();
+            }
+
+            //sendSocket.Accept();
+
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine(ex.Message);
+        }
+
+    }
+
+    
+}
+
