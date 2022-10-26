@@ -6,7 +6,7 @@ using System.Net;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace MIR_Client
+namespace MIR_Server
 {
     internal class BytesExtracting
     {

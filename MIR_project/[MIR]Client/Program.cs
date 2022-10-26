@@ -1,4 +1,4 @@
-﻿using _MIR_Client;
+﻿using MIR_Client;
 using System;
 using System.IO;
 using System.Net;
@@ -19,41 +19,35 @@ public class Program
     //выводит сообщение пользователю и завершает работу.
     public static void Main(string[] args)
     {
-        //Socket sendSocket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
+        Console.Write("Начало работы");
+        Socket sendSocket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
 
-        //try
-        //{
-        //    //подключаемся к удаленному хосту
-        //    sendSocket.Connect(new IPEndPoint(IPAddress.Parse("127.0.0.1"), 10000));
-        //    Console.Write("Введите сообщение:");
-        //    string message = Console.ReadLine();
-        //    byte[] data = Encoding.Unicode.GetBytes(message);
-        //    SendFileOverSocket(sendSocket, "File.txt");
-        string filePath = "C:\\Users\\Anton\\source\\repos\\MIR_project\\[MIR]Client\\File.txt";
-        FileDto fileDto = FileDtoUtils.CreateFileDto(filePath);
-        byte[] buffer = fileDto.Serialize();
-        Console.WriteLine("Программа запустилась");
-        Console.WriteLine(Encoding.Unicode.GetString(fileDto.Name) + " " + BitConverter.ToInt32(fileDto.Data) + " " 
-            + BitConverter.ToInt32(fileDto.NameBytesAmount) + " " + BitConverter.ToInt32(fileDto.TotalBytesAmount));
-        Console.WriteLine("Итоговая строка: " + fileDto.ToString);
-        
-        //    sendSocket.Shutdown(SocketShutdown.Both);
-        //    sendSocket.Close();
+        try
+        {
+            //подключаемся к удаленному хосту
+            sendSocket.Connect(new IPEndPoint(IPAddress.Parse("127.0.0.1"), 10000));
+            Console.Write("Соединение установлено");
 
-        //}
-        //catch (Exception ex)
-        //{
-        //    Console.WriteLine(ex.ToString());
-        //}
+            string filePath = "C:\\Users\\Anton\\source\\repos\\MIR_project\\[MIR]Client\\File.txt";
+            SendFileOverSocket(sendSocket, filePath);
+            Console.Write("Файл отправлен");
+
+            sendSocket.Shutdown(SocketShutdown.Both);
+            sendSocket.Close();
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine(ex.ToString());
+        }
+
+        Console.Write("Завершение работы");
     }
 
     public static void SendFileOverSocket(Socket socket, String fileName)
     {
         //[TODO]Проверять существует ли файл с таким названием(сделать отдельный метод)
         FileDto fileDto = FileDtoUtils.CreateFileDto(fileName);
-
-        
-
+        socket.Send(fileDto.Serialize());
     }
     
 }
