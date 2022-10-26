@@ -48,6 +48,7 @@ public class Program
         //[TODO]Проверять существует ли файл с таким названием(сделать отдельный метод)
         FileDto fileDto = FileDtoUtils.CreateFileDto(fileName);
         socket.Send(fileDto.Serialize());
+
     }
     
 }
