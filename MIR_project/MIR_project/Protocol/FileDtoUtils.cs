@@ -19,8 +19,8 @@ namespace MIR_Server
         {
             byte[] totalBytesAmount = new byte[FileDtoUtils.TotalBytesAmountSize];
             byte[] nameBytesAmount = new byte[FileDtoUtils.NameBytesAmountSize];
-            byte[] fileNameBytes = BytesExtracting.GetFileNameBytes(fileName);
-            byte[] fileDataBytes = BytesExtracting.GetFileDataBytes(fileName);
+            byte[] fileNameBytes = BytesManagment.GetFileNameBytes(fileName);
+            byte[] fileDataBytes = BytesManagment.GetFileDataBytes(fileName);
             totalBytesAmount = BitConverter.GetBytes(FileDtoUtils.TotalBytesAmountSize + FileDtoUtils.NameBytesAmountSize
                 + fileNameBytes.Length + fileDataBytes.Length);
             nameBytesAmount = BitConverter.GetBytes(fileNameBytes.Length);

@@ -6,9 +6,9 @@ using System.Net;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace MIR_Server
+namespace MIR_Client
 {
-    internal class BytesExtracting
+    internal class BytesManagment
     {
         // знак вопроса после типа данных значит, что переменна может быть Null
         public static Byte[] GetFileNameBytes(String filePath)
@@ -19,6 +19,11 @@ namespace MIR_Server
         public static Byte[] GetFileDataBytes(String filePath)
         {
             return File.ReadAllBytes(filePath);
+        }
+
+        public static void WriteBytesIntoFile(String filePath, byte[] bytes)
+        {
+            File.WriteAllBytes(filePath, bytes);
         }
 
     }
