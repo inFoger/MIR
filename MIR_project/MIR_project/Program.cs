@@ -88,8 +88,16 @@ public class Program
 
     static void FileSendingToClient(Socket clientSendingSocket)
     {
-        
+        //[TODO]Проверять существует ли файл с таким названием(сделать отдельный метод)
+        string filePath = "C:\\Users\\Anton\\source\\repos\\MIR\\MIR_project\\MIR_project\\SavedFiles\\File.txt";
+        FileDto fileDto = FileDtoUtils.CreateFileDto(filePath);
+        clientSendingSocket.Send(fileDto.Serialize());
+        Console.Write("Файл отправлен");
+
+        clientSendingSocket.Shutdown(SocketShutdown.Both);
+        clientSendingSocket.Close();
     }
+
 }
 
 /* код для подглядывания
