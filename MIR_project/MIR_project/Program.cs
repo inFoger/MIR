@@ -61,10 +61,9 @@ public class Program
 
                 int totalBytesAmountInt = BitConverter.ToInt32(totalBytesAmount);
                 int nameBytesAmountInt = BitConverter.ToInt32(nameBytesAmount);
-                // всё верно до этого момента. Отладить то, что ниже
 
                 byte[] nameBytes = new byte[nameBytesAmountInt];
-                byte[] dataBytes = new byte[totalBytesAmountInt = nameBytesAmountInt];
+                byte[] dataBytes = new byte[totalBytesAmountInt - nameBytesAmountInt];
 
                 clientSendingSocket.Receive(nameBytes);
                 clientSendingSocket.Receive(dataBytes);
@@ -72,6 +71,7 @@ public class Program
                 string name = Encoding.Unicode.GetString(nameBytes);
                 Console.WriteLine("Название: " + name + "\nTotal bytes amount: " + totalBytesAmountInt);
                 Console.WriteLine("Name bytes amount: " + nameBytesAmountInt + "\nData bytes: " + dataBytes);
+
 
                 //расшифровать байтовые массивы и вывести их
 
